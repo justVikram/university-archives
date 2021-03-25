@@ -67,7 +67,7 @@ public:
         wt = 0.0;
     }
     
-    void getMed (int ItemID, string ItemName, DATE DOE, DATE DOM, float price, float wt)
+    void getMedicineDetails (int ItemID, string ItemName, DATE DOE, DATE DOM, float price, float wt)
     {
         this->ItemID = ItemID;
         this->ItemName = ItemName;
@@ -86,7 +86,7 @@ public:
         return price;
     }
     
-    void showMed ()
+    void showMedicineDetails ()
     {
         cout << "Medicine's Item ID: " << ItemID << endl;
         cout << "Medicine Name: " << ItemName << endl;
@@ -127,9 +127,9 @@ public:
             this->MedicinesPurchased [i] = MedicinesPurchased [i];
     }
     
-    void selectMedicine (MEDICINE MedicinesPurchased)
+    void selectMedicine (MEDICINE MedicinePurchased)
     {
-        this->MedicinesPurchased [NumberOfMedicinesPurchased++] = MedicinesPurchased;
+        this->MedicinesPurchased [NumberOfMedicinesPurchased++] = MedicinePurchased;
     }
     
     
@@ -177,7 +177,7 @@ public:
         cout << "Shop ID: " << ShopID;
         
         for (auto i : MedicinesAvailable)
-            i.showMed();
+            i.showMedicineDetails ();
     }
 };
 
@@ -226,7 +226,7 @@ int main  (int argc, const char * argv[])
         cout << "Enter weight of medicine " << i+1 << " in mg:";
         cin >> wt;
         
-        MedicineDetails [i].getMed(ItemID, ItemName, DOE, DOM, price, wt);
+        MedicineDetails [i].getMedicineDetails(ItemID, ItemName, DOE, DOM, price, wt);
     }
     
     //MARK:-
@@ -310,7 +310,7 @@ int main  (int argc, const char * argv[])
                 cout << "Get medicine details.";
                 
                 for (int i = 0; i < NumberOfMedicines; i++)
-                MedicineDetails [i].showMed();
+                MedicineDetails [i].showMedicineDetails ();
             }
         }
         
