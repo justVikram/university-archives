@@ -168,3 +168,144 @@ select job_id, sum(salary) lol from staff group by job_id having sum(salary) > 5
 select max(salary) from staff;
 
 select avg(salary), s.job_id from staff s, job_designation jd where s.job_id = jd.job_id and jd.job_name = 'physician' group by s.job_id;
+
+select  count(*) totalcount, p.p_id from patient p, patient_prescription pp, tests t where t.prec_id = pp.prec_id and pp.p_id = p.p_id group by p.p_id;
+
+select count(s.s_id) from staff s, job_designation jd where jd.shift = 'day' and s.job_id = jd.job_id group by jd.job_id;
+
+select s.s_id, count(pp.p_id), sum(i.amount) from staff s, patient_prescription pp, insure i where s.s_id = pp.s_id and pp.p_id = i.p_id group by s.s_id;
+
+select s.s_fname, s.s_lname, count(pp.p_id) totalpatients from job_designation jd, staff s, patient_prescription pp where jd.job_id = s.job_id and s.s_id = pp.s_id and jd.job_name = 'physician' group by s.s_fname, s_lname having totalpatients >= 2;
+
+select s.s_fname, s.s_lname, count(pp.p_id) totaltests from patient_prescription pp, staff s where s.s_id = pp.s_id group by s.s_fname, s.s_lname having totaltests >= 2;
+
+select (adp.date_discharged - adp.date_admitted) admit_days, p.p_fname from patient p, Admission_Discharge_Patient adp where p.p_id = adp.p_id order by p.p_fname;
+
+select p.p_fname, p.p_lname, count(i.c_id) numinsurance from insure i, patient p where i.p_id = p.p_id group by p.p_id having numinsurance > 1;
+
+select s.s_id, substr(date_admitted, 6, 2) d_admit from Admission_Discharge_Patient adp, staff s, patient_prescription pp, patient p where p.p_id = adp.p_id and p.p_id = pp.p_id and s.s_id = pp.s_id group by s.s_id, d_admit order by d_admit;
+
+select  p.p_fname, p.p_lname from job_designation jd, staff s, patient p, patient_prescription pp where p.p_id = pp.p_id and pp.s_id = s.s_id and s.job_id = jd.job_id and jd.job_name like '%anthro%';
+
+#Using sub-query
+select  p.p_fname, p.p_lname from patient p, patient_prescription pp where p.p_id = pp.p_id and pp.s_id = (select s.s_id from job_designation jd, staff s where s.job_id = jd.job_id and jd.job_name like '%anthro%');
+
+# Retrieve name of the physician...
+SELECT s.s_fname,
+       s.s_lname
+FROM staff s,
+     job_designation jd
+WHERE s.job_id = jd.job_id
+  AND jd.job_name = 'physician'
+  AND s.s_id IN
+      (SELECT pp.s_id
+       FROM patient p,
+            patient_prescription pp
+       WHERE p.p_fname = 'sonal'
+         AND p.p_id = pp.p_id
+      );
+
+
+SELECT p.p_fname,
+       p.p_lname
+FROM patient p,
+     insure i
+WHERE p.p_id = i.p_id
+  AND i.c_id IN
+      (
+          SELECT ins.c_id
+          FROM insurance ins
+          WHERE ins.c_name = 'reliance'
+      );
+
+
+SELECT s.s_fname,
+       s.s_lname,
+       jd.job_name
+FROM staff s,
+     job_designation jd
+WHERE s.job_id = jd.job_id
+  AND jd.year_of_experience <= ALL
+      (
+          SELECT year_of_experience
+          FROM job_designation
+      );
+
+SELECT p.p_fname
+FROM patient p
+WHERE EXISTS
+          (
+              SELECT *
+              FROM patient
+              WHERE p_fname = 'neha'
+                AND age = p.age
+          );
+
+SELECT i_outer.p_id,
+       i_outer.insuranc_type,
+       i_outer.amount
+FROM insure i_outer
+WHERE NOT EXISTS
+    (
+        SELECT *
+        FROM insure i_inner
+        WHERE i_inner.amount > i_outer.amount
+    );
+
+SELECT *
+FROM staff outer_staff
+WHERE 1 = ANY
+      (
+          SELECT COUNT(inner_staff.salary)
+          FROM staff inner_staff
+          WHERE inner_staff.salary > outer_staff.salary
+      );
+
+SELECT s.s_fname,
+       outer_jd.year_of_experience
+FROM staff s,
+     job_designation outer_jd
+WHERE s.job_id = outer_jd.job_id
+  AND 1 = ANY
+      (
+          SELECT COUNT(inner_jd.year_of_experience)
+          FROM job_designation inner_jd
+          WHERE inner_jd.year_of_experience < outer_jd.year_of_experience
+      );
+
+#INNER ATTRIBUTE ITERATES OVER EACH VALUE OF ITSELF, FOR EACH VALUE PASSED FROM OUTER ATTRIBUTE
+
+UPDATE patient
+SET p_fname = CONCAT('IP', 'test')
+WHERE p_id IN
+      (
+          SELECT p_id
+          FROM Admission_Discharge_Patient
+          WHERE date_admitted IS NOT NULL
+      );
+
+CREATE VIEW ReliancePatients AS
+    (
+        SELECT p.p_id,
+            p_fname,
+            p_lname,
+            age,
+            gender,
+            amount
+        FROM patient p,
+            insure i,
+            insurance ins
+        WHERE ins.c_name = 'reliance'
+            AND p.p_id = i.p_id
+            AND i.c_id = ins.c_id
+    );
+
+SELECT s.s_fname, s.s_lname
+FROM job_designation jd,
+     staff s,
+     ReliancePatients,
+     patient_prescription pp
+WHERE s.job_id = jd.job_id
+  AND pp.p_id = ReliancePatients.p_id
+  AND pp.s_id = s.s_id
+  AND jd.year_of_experience <= 15;
