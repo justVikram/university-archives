@@ -118,6 +118,11 @@ public:
         CustomerName = "UNDEFINED";
     }
     
+    void getNumberOfCustomers ()
+    {
+        cin >> NumberOfCustomers;
+    }
+    
     void getCustomerDetails (int CustomerID, string CustomerName)
     {
         this->CustomerId = CustomerID;
@@ -143,6 +148,9 @@ public:
         return cost;
     }
 };
+
+int CUSTOMER :: NumberOfCustomers = 0;
+int CUSTOMER :: NumberOfMedicinesPurchased = 0;
 
 //MARK:-
 
@@ -185,6 +193,8 @@ public:
             i.showMedicineDetails ();
     }
 };
+int SHOP :: NumberOfMedicines = 0;
+int SHOP :: NumberOfCustomersInShop = 0;
 
 //MARK:-
 
