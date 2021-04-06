@@ -8,7 +8,8 @@
 
 using namespace std;
 
-ifstream fin ("test.txt");
+ifstream fin ("input.txt");
+ofstream fout("output.txt");
 
 class DATE
 {
@@ -79,9 +80,9 @@ public:
         return ItemID;
     }
     
-    int getPrice ()
+    int getWeight ()
     {
-        return price;
+        return wt;
     }
     
     void showMedicineDetails ()
@@ -141,12 +142,14 @@ public:
     }
     
     
-    int getCost ()
+    int getTotalWeight ()
     {
         int cost = 0;
         
-        for (auto i : MedicinesPurchased)
-            cost += i.getPrice();
+        for (int i = 0; i < NumberOfMedicinesPurchased; i++)
+        {
+            cost += MedicinesPurchased [i].getWeight();
+        }
           
         return cost;
     }
@@ -338,10 +341,10 @@ int main  (int argc, const char * argv[])
             }
         }
         
-        MinWtOfMedsSelected = ListOfCustomers[CustomerSelected].getCost() >= 300;
+        MinWtOfMedsSelected = ListOfCustomers[CustomerSelected].getTotalWeight() >= 300;
         MedicalStore.addCustomer(ListOfCustomers [CustomerSelected]);
     }
-    while (MinWtOfMedsSelected);
+    while (! MinWtOfMedsSelected);
     
     cout << "You have selected more than 300 mg of medicines -- processing transaction... thank you." << endl << endl;
     ListOfCustomers [CustomerSelected].showPurchasedMedicines();
