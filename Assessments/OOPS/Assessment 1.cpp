@@ -2,10 +2,13 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
 
 #define tab '\t'
 
 using namespace std;
+
+ifstream fin ("test.txt");
 
 class DATE
 {
@@ -120,7 +123,7 @@ public:
     
     void getNumberOfCustomers ()
     {
-        cin >> NumberOfCustomers;
+        fin >> NumberOfCustomers;
     }
     
     void getCustomerDetails (int CustomerID, string CustomerName)
@@ -146,6 +149,12 @@ public:
             cost += i.getPrice();
           
         return cost;
+    }
+    
+    void showPurchasedMedicines ()
+    {
+        for (int i = 0; i < NumberOfMedicinesPurchased; i++)
+            MedicinesPurchased [i].showMedicineDetails();
     }
 };
 
@@ -200,12 +209,12 @@ int SHOP :: NumberOfCustomersInShop = 0;
 
 int main  (int argc, const char * argv[])
 {
-    CUSTOMER CustomerList [10];
+    CUSTOMER ListOfCustomers [10];
     SHOP MedicalStore;
     MEDICINE ListOfMedicines [10];
     
     cout << "Enter number of meds available at the shop:";
-    cin >> SHOP :: NumberOfMedicines;
+    fin >> SHOP :: NumberOfMedicines;
     
     for (int i = 0; i < SHOP :: NumberOfMedicines; i++)
     {
@@ -217,10 +226,10 @@ int main  (int argc, const char * argv[])
         float wt;
         
         cout << "Enter Item ID for medicine " << i+1 << ":";
-        cin >> ItemID;
+        fin >> ItemID;
         
         cout << "Enter Item Name for medicine " << i+1 << ":";
-        cin >> ItemName;
+        fin >> ItemName;
         
         
         int DD;
@@ -228,18 +237,18 @@ int main  (int argc, const char * argv[])
         int YY;
         
         cout << "Enter DOM for medicine " << i+1 << ":";
-        cin >> DD >> MM >> YY;
+        fin >> DD >> MM >> YY;
         DOM.readDate(DD, MM, YY);
         
         cout << "Enter DOE for medicine " << i+1 << ":" << endl;
-        cin >> DD >> MM >> YY;
+        fin >> DD >> MM >> YY;
         DOE.readDate(DD, MM, YY);
         
         cout << "Enter cost of medicine " << i+1 << ":" << endl;
-        cin >> price;
+        fin >> price;
         
         cout << "Enter weight of medicine " << i+1 << " in mg:";
-        cin >> wt;
+        fin >> wt;
         
         ListOfMedicines [i].getMedicineDetails(ItemID, ItemName, DOE, DOM, price, wt);
     }
@@ -250,17 +259,17 @@ int main  (int argc, const char * argv[])
     string ShopName;
     
     cout << "Enter shop ID: ";
-    cin >> ShopID;
+    fin >> ShopID;
     
     cout << "Enter shop name: ";
-    cin >> ShopName;
+    fin >> ShopName;
     
     MedicalStore.setupShop (ShopID, ShopName, ListOfMedicines);
 
     //MARK:-
     
     cout << "Enter number of customers: ";
-    cin >> CUSTOMER :: NumberOfCustomers;
+    fin >> CUSTOMER :: NumberOfCustomers;
     
     for (int i = 0; i < CUSTOMER :: NumberOfCustomers; i++)
     {
@@ -270,20 +279,20 @@ int main  (int argc, const char * argv[])
         MEDICINE MedicinesPurchased [10];
         
         cout << "Enter customer " << i << "'s ID";
-        cin >> CustomerId;
+        fin >> CustomerId;
         
         cout << "Enter customer " << i << "'s name";
-        cin >> CustomerName;
+        fin >> CustomerName;
         
-        CustomerList [i].getCustomerDetails (CustomerId, CustomerName);
+        ListOfCustomers [i].getCustomerDetails (CustomerId, CustomerName);
     
     }
     
     //MARK:-
     
-    int CustomerRank;
+    int CustomerSelected;
     cout << "Select customer rank: ";
-    cin >> CustomerRank;
+    fin >> CustomerSelected;
     
     bool MinWtOfMedsSelected = true;
     
@@ -291,7 +300,7 @@ int main  (int argc, const char * argv[])
     {
         int choice;
         cout << "Enter choice: ";
-        cin >> choice;
+        fin >> choice;
         
         switch (choice)
         {
@@ -301,7 +310,7 @@ int main  (int argc, const char * argv[])
                 
                 int MedicineID;
                 cout << "Enter medicine ID: ";
-                cin >> MedicineID;
+                fin >> MedicineID;
                 
                 int flag = 0;
                 
@@ -309,7 +318,7 @@ int main  (int argc, const char * argv[])
                 {
                     if (ListOfMedicines [i].getID() == MedicineID)
                     {
-                        CustomerList [CustomerRank].buyMedicine(ListOfMedicines [i]);
+                        ListOfCustomers [CustomerSelected].buyMedicine(ListOfMedicines [i]);
                         flag = 1;
                     }
                 }
@@ -329,10 +338,11 @@ int main  (int argc, const char * argv[])
             }
         }
         
-        MinWtOfMedsSelected = CustomerList[CustomerRank].getCost() >= 300;
-        MedicalStore.addCustomer(CustomerList [CustomerRank]);
+        MinWtOfMedsSelected = ListOfCustomers[CustomerSelected].getCost() >= 300;
+        MedicalStore.addCustomer(ListOfCustomers [CustomerSelected]);
     }
-    while (! MinWtOfMedsSelected);
+    while (MinWtOfMedsSelected);
     
-    cout << "You have selected more than 300 mg of medicines -- processing transaction... thank you." << endl;
+    cout << "You have selected more than 300 mg of medicines -- processing transaction... thank you." << endl << endl;
+    ListOfCustomers [CustomerSelected].showPurchasedMedicines();
 }
