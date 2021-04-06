@@ -5,11 +5,6 @@
 
 #define tab '\t'
 
-static int NumberOfMedicines;
-static int NumberOfCustomers;
-static int NumberOfMedicinesPurchased = 0;
-static int NumberOfCustomersInShop = 0;
-
 using namespace std;
 
 class DATE
@@ -96,7 +91,7 @@ public:
         cout << "DOE:" << endl;
         DOE.printDate();
         
-        cout << "Weight: " << wt << endl;
+        cout << "Weight of medicine: " << wt << endl;
     }
 };
 
@@ -104,13 +99,18 @@ public:
 
 class CUSTOMER
 {
-public:
+private:
     
     int CustomerId;
     string CustomerName;
     MEDICINE MedicinesPurchased [10];
     
     //MARK:-
+    
+public:
+    
+    static int NumberOfMedicinesPurchased;
+    static int NumberOfCustomers;
     
     CUSTOMER ()
     {
@@ -127,9 +127,9 @@ public:
             this->MedicinesPurchased [i] = MedicinesPurchased [i];
     }
     
-    void selectMedicine (MEDICINE MedicinePurchased)
+    void buyMedicine (MEDICINE MedicinePurchased)
     {
-        this->MedicinesPurchased [NumberOfMedicinesPurchased++] = MedicinePurchased;
+        this->MedicinesPurchased [CUSTOMER :: NumberOfMedicinesPurchased++] = MedicinePurchased;
     }
     
     
@@ -148,7 +148,7 @@ public:
 
 class SHOP
 {
-public:
+private:
     
     int ShopID;
     string ShopName;
@@ -156,6 +156,11 @@ public:
     CUSTOMER ListOfCustomers [10];
     
     //MARK:-
+    
+public:
+    
+    static int NumberOfMedicines;
+    static int NumberOfCustomersInShop;
     
     void setupShop (int ShopID, string ShopName, MEDICINE MedicinesAvailable [10])
     {
@@ -168,7 +173,7 @@ public:
     
     void addCustomer (CUSTOMER NewCustomer)
     {
-        ListOfCustomers [NumberOfCustomersInShop++] = NewCustomer;
+        ListOfCustomers [SHOP :: NumberOfCustomersInShop++] = NewCustomer;
     }
     
     void showShop ()
@@ -185,14 +190,14 @@ public:
 
 int main  (int argc, const char * argv[])
 {
-    CUSTOMER NewCustomer [10];
+    CUSTOMER CustomerList [10];
     SHOP MedicalStore;
-    MEDICINE MedicineDetails [10];
+    MEDICINE ListOfMedicines [10];
     
     cout << "Enter number of meds available at the shop:";
-    cin >> NumberOfMedicines;
+    cin >> SHOP :: NumberOfMedicines;
     
-    for (int i = 0; i < NumberOfMedicines; i++)
+    for (int i = 0; i < SHOP :: NumberOfMedicines; i++)
     {
         int ItemID;
         string ItemName;
@@ -226,7 +231,7 @@ int main  (int argc, const char * argv[])
         cout << "Enter weight of medicine " << i+1 << " in mg:";
         cin >> wt;
         
-        MedicineDetails [i].getMedicineDetails(ItemID, ItemName, DOE, DOM, price, wt);
+        ListOfMedicines [i].getMedicineDetails(ItemID, ItemName, DOE, DOM, price, wt);
     }
     
     //MARK:-
@@ -240,14 +245,14 @@ int main  (int argc, const char * argv[])
     cout << "Enter shop name: ";
     cin >> ShopName;
     
-    MedicalStore.setupShop (ShopID, ShopName, MedicineDetails);
+    MedicalStore.setupShop (ShopID, ShopName, ListOfMedicines);
 
     //MARK:-
     
     cout << "Enter number of customers: ";
-    cin >> NumberOfCustomers;
+    cin >> CUSTOMER :: NumberOfCustomers;
     
-    for (int i = 0; i < NumberOfCustomers; i++)
+    for (int i = 0; i < CUSTOMER :: NumberOfCustomers; i++)
     {
     
         int CustomerId;
@@ -260,7 +265,7 @@ int main  (int argc, const char * argv[])
         cout << "Enter customer " << i << "'s name";
         cin >> CustomerName;
         
-        NewCustomer [i].getCustomerDetails (CustomerId, CustomerName);
+        CustomerList [i].getCustomerDetails (CustomerId, CustomerName);
     
     }
     
@@ -290,11 +295,11 @@ int main  (int argc, const char * argv[])
                 
                 int flag = 0;
                 
-                for (int i = 0; i < NumberOfMedicines; i++)
+                for (int i = 0; i < SHOP :: NumberOfMedicines; i++)
                 {
-                    if (MedicineDetails [i].getID() == MedicineID)
+                    if (ListOfMedicines [i].getID() == MedicineID)
                     {
-                        NewCustomer [CustomerRank].selectMedicine(MedicineDetails [i]);
+                        CustomerList [CustomerRank].buyMedicine(ListOfMedicines [i]);
                         flag = 1;
                     }
                 }
@@ -309,13 +314,13 @@ int main  (int argc, const char * argv[])
             {
                 cout << "Get medicine details.";
                 
-                for (int i = 0; i < NumberOfMedicines; i++)
-                MedicineDetails [i].showMedicineDetails ();
+                for (int i = 0; i < SHOP :: NumberOfMedicines; i++)
+                ListOfMedicines [i].showMedicineDetails ();
             }
         }
         
-        MinWtOfMedsSelected = NewCustomer[CustomerRank].getCost() >= 300;
-        MedicalStore.addCustomer(NewCustomer [CustomerRank]);
+        MinWtOfMedsSelected = CustomerList[CustomerRank].getCost() >= 300;
+        MedicalStore.addCustomer(CustomerList [CustomerRank]);
     }
     while (! MinWtOfMedsSelected);
     
