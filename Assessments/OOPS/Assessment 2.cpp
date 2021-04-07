@@ -1,4 +1,4 @@
-//OOPS Assessment 1 -- Customer goes to a shop to buy medicines, such that total weight of medicines shouldn't exceed 300 mg.
+/* OOPS Assessment 2 -- Customer goes to shop to buy grocery items. Grocery items could be of foods (which could then be packed or unpacked), detergents, and glass items. Customer can be gold, silver or a platinum member, and his reward points would be calculated accordingly. The item the customer buys will have a certain tax amount associated with it, which will be calculated separately for each item. */
 
 #include <iostream>
 #include <string>
