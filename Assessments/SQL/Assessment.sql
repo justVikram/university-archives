@@ -347,3 +347,81 @@ SELECT ((DATEDIFF(curdate(), cc.Exp_Date) / 30) - FLOOR((DATEDIFF(curdate(), cc.
        FLOOR(((DATEDIFF(curdate(), cc.Exp_Date) / 30) / 12))          AS YEARS
 FROM Credit_Card cc
 WHERE cc.CardType = 'Mastercard';
+
+
+# ASSESSMENT 2 BEGINS HERE
+
+
+INSERT INTO Credit_Card
+VALUES ('2344765578987655', 15, 'Visa', '2002-02-20');
+
+# Find average, min, max cost of each room.
+
+SELECT res.RoomNo,
+       AVG(res.amount) AS AVG_COST,
+       MAX(res.amount) AS MAX,
+       MIN(res.amount) AS MIN
+FROM Reservation res
+GROUP BY res.RoomNo;
+
+# List customer who has made booking more than once [USING SET THEORY]
+
+SELECT custId
+FROM Customer;
+#INTERSECT
+SELECT custId
+FROM Reservation
+GROUP BY custId
+HAVING COUNT(custId) > 1;
+
+# For each credit card type that has at least two customers, retrieve the number of credit cards, number of rooms
+# reserved and number of customers who have reserved at a cost higher than Rs 4000.
+
+SELECT COUNT(cc.Cust_Id) AS NUMBER_OF_CUSTOMERS,
+       cc.CardType,
+       COUNT(res.RoomNo) AS ROOMS_RESERVED,
+       count(cc.Card_no) AS NUMBER_OF_CARDS
+FROM Credit_Card cc,
+     Reservation res
+WHERE cc.Cust_Id = res.custId
+  AND res.amount > 4000
+GROUP BY cc.CardType
+HAVING count(cc.Cust_Id) >= 2;
+
+# Find only the agent_id of each customer with an avg discount amount of over 1000.
+
+SELECT r.custId,
+       r.AgentID
+FROM Discount d,
+     Reservation r
+WHERE d.ConfirmNo = r.ConfirmNo
+GROUP BY r.custId, r.AgentID
+HAVING AVG(d.DiscountAmount) > 1000;
+
+# Retrieve room number, name, and number of customers staying in the room if there are more than one customers in a room.
+
+SELECT COUNT(res.RoomNo) AS NUM_OF_CUSTOMERS,
+       res.RoomNo,
+       r.RoomName
+FROM Reservation res,
+     Room r
+WHERE r.RoomNo = res.RoomNo
+GROUP BY res.RoomNo
+HAVING NUM_OF_CUSTOMERS > 1;
+
+# Find number of customers present in each floor of the hotel.
+
+SELECT roo.RoomFloor,
+       COUNT(res.custId) AS NUM_OF_CUSTOMERS
+FROM Room roo,
+     Reservation res
+WHERE res.RoomNo = roo.RoomNo
+GROUP BY roo.RoomFloor
+ORDER BY roo.RoomFloor;
+
+# SELF DEFINED QUERY THAT DISPLAYS OUTPUT COMPRISING OF GROUP BY AND MAX FUNCTION, WITHOUT 'HAVING' CLAUSE.
+# -> For each room that was reserved, find out the highest amount paid for that room.
+SELECT res.RoomNo,
+       MAX(res.amount) AS MAX_AMOUNT
+FROM Reservation res
+GROUP BY (res.RoomNo);
