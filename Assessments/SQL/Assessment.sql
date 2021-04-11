@@ -258,7 +258,10 @@ VALUES (9, 'Extra Blankets', 0, 1, 19);
 INSERT INTO preference
 VALUES (10, 'Extra Roll-Away Beds', 1, 2, 19);
 
-# Retrieve all customer names who reserved their room in 1st to 3rd floor of the hotel but canceled their reservation.
+
+-- ASSESSMENT 1 STARTS HERE
+
+-- Retrieve all customer names who reserved their room in 1st to 3rd floor of the hotel but canceled their reservation.
 
 SELECT c.CustId,
        res.RoomNo,
@@ -272,8 +275,8 @@ WHERE r.RoomFloor BETWEEN 1 AND 3
   AND res.Cancel_Date IS NOT NULL
   AND res.custId = c.CustId;
 
-# Retrieve customer names and bed type of customers who booked their rooms in the hotel and selected the cancel option
-# as yes but did not cancel their reservation.
+-- Retrieve customer names and bed type of customers who booked their rooms in the hotel and selected the cancel option
+--  as yes but did not cancel their reservation.
 
 SELECT c.CustId,
        c.First_name,
@@ -289,8 +292,8 @@ WHERE res.cancel_option = 'yes'
   AND r.RoomNo = res.RoomNo
   AND res.custId = c.CustId;
 
-# Retrieve all customer names who canceled rooms in the hotel from 1st Jan 2012 to 31st Dec 2012 and
-# from 1st Jan 2014 to 31st Dec 2014.
+-- Retrieve all customer names who canceled rooms in the hotel from 1st Jan 2012 to 31st Dec 2012 and
+-- from 1st Jan 2014 to 31st Dec 2014.
 
 SELECT c.CustId,
        c.First_name,
@@ -310,9 +313,8 @@ WHERE res.Cancel_Date IS NOT NULL
   AND res.Cancel_Date BETWEEN '2014-01-01' AND '2014-12-31'
   AND res.custId = c.CustId;
 
-
-# Retrieve the first name and the last name of customers who reserved rooms in the hotel from
-# 1st August 2012 to 31st July 2013 in alphabetical order of their names.
+-- Retrieve the first name and the last name of customers who reserved rooms in the hotel from
+-- 1st August 2012 to 31st July 2013 in alphabetical order of their names.
 
 SELECT c.CustId,
        c.First_name,
@@ -324,9 +326,9 @@ WHERE res.Reservation_Date BETWEEN '2012-08-01' AND '2013-07-13'
   AND c.CustId = res.custId
 ORDER BY c.First_name, c.Last_name;
 
-# Display the amount saved by customers, if the customer is provided with discounted reservation amount in comparison
-# to the actual amount that would have cost the customer if price per night was considered from room_type table for
-#staying in the hotel.
+-- Display the amount saved by customers, if the customer is provided with discounted reservation amount in comparison
+-- to the actual amount that would have cost the customer if price per night was considered from room_type table for
+-- staying in the hotel.
 
 SELECT rt.pricePerNgt,
        DATEDIFF(res.Departure_date, res.Arrival_date)                            AS DaysStayed,
@@ -339,7 +341,7 @@ FROM Reservation res,
 WHERE rt.Room_type = r.RoomName
   AND r.RoomNo = res.RoomNo;
 
-# Display time since Mastercard has expired
+--Display time since Mastercard has expired
 
 SELECT ((DATEDIFF(curdate(), cc.Exp_Date) / 30) - FLOOR((DATEDIFF(curdate(), cc.Exp_Date) / 30))) * 30,
        FLOOR((((DATEDIFF(curdate(), cc.Exp_Date) / 30) / 12) -
@@ -349,13 +351,13 @@ FROM Credit_Card cc
 WHERE cc.CardType = 'Mastercard';
 
 
-# ASSESSMENT 2 BEGINS HERE
+-- ASSESSMENT 2 STARTS HERE
 
 
 INSERT INTO Credit_Card
 VALUES ('2344765578987655', 15, 'Visa', '2002-02-20');
 
-# Find average, min, max cost of each room.
+-- Find average, min, max cost of each room.
 
 SELECT res.RoomNo,
        AVG(res.amount) AS AVG_COST,
@@ -364,7 +366,7 @@ SELECT res.RoomNo,
 FROM Reservation res
 GROUP BY res.RoomNo;
 
-# List customer who has made booking more than once [USING SET THEORY]
+--List customer who has made booking more than once [USING SET THEORY]
 
 SELECT custId
 FROM Customer;
@@ -374,8 +376,8 @@ FROM Reservation
 GROUP BY custId
 HAVING COUNT(custId) > 1;
 
-# For each credit card type that has at least two customers, retrieve the number of credit cards, number of rooms
-# reserved and number of customers who have reserved at a cost higher than Rs 4000.
+ --For each credit card type that has at least two customers, retrieve the number of credit cards, number of rooms
+--reserved and number of customers who have reserved at a cost higher than Rs 4000.
 
 SELECT COUNT(cc.Cust_Id) AS NUMBER_OF_CUSTOMERS,
        cc.CardType,
@@ -388,7 +390,7 @@ WHERE cc.Cust_Id = res.custId
 GROUP BY cc.CardType
 HAVING count(cc.Cust_Id) >= 2;
 
-# Find only the agent_id of each customer with an avg discount amount of over 1000.
+--Find only the agent_id of each customer with an avg discount amount of over 1000.
 
 SELECT r.custId,
        r.AgentID
@@ -398,7 +400,7 @@ WHERE d.ConfirmNo = r.ConfirmNo
 GROUP BY r.custId, r.AgentID
 HAVING AVG(d.DiscountAmount) > 1000;
 
-# Retrieve room number, name, and number of customers staying in the room if there are more than one customers in a room.
+--Retrieve room number, name, and number of customers staying in the room if there are more than one customers in a room.
 
 SELECT COUNT(res.RoomNo) AS NUM_OF_CUSTOMERS,
        res.RoomNo,
@@ -409,7 +411,7 @@ WHERE r.RoomNo = res.RoomNo
 GROUP BY res.RoomNo
 HAVING NUM_OF_CUSTOMERS > 1;
 
-# Find number of customers present in each floor of the hotel.
+-- Find number of customers present in each floor of the hotel.
 
 SELECT roo.RoomFloor,
        COUNT(res.custId) AS NUM_OF_CUSTOMERS
@@ -419,9 +421,91 @@ WHERE res.RoomNo = roo.RoomNo
 GROUP BY roo.RoomFloor
 ORDER BY roo.RoomFloor;
 
-# SELF DEFINED QUERY THAT DISPLAYS OUTPUT COMPRISING OF GROUP BY AND MAX FUNCTION, WITHOUT 'HAVING' CLAUSE.
-# -> For each room that was reserved, find out the highest amount paid for that room.
+-- SELF DEFINED QUERY THAT DISPLAYS OUTPUT COMPRISING OF GROUP BY AND MAX FUNCTION, WITHOUT 'HAVING' CLAUSE.
+-- -> For each room that was reserved, find out the highest amount paid for that room.
 SELECT res.RoomNo,
        MAX(res.amount) AS MAX_AMOUNT
 FROM Reservation res
 GROUP BY (res.RoomNo);
+
+
+-- ASSESSMENT 3 STARTS HERE
+
+
+-- Select name and city of customers who requested for extra pillows in the hotel room.
+
+SELECT c.CustId,
+       c.First_name,
+       c.Last_name,
+       c.Addrcity
+FROM Customer c
+WHERE c.CustId IN
+      (
+          SELECT p.CustId
+          FROM Preference p
+          WHERE p.PreferenceType = 'Extra Pillows'
+      );
+-- Retrieve room numbers which are on the top most floor of the hotel.
+
+SELECT out_r.RoomFloor,
+       out_r.RoomNo
+FROM Room out_r
+WHERE NOT EXISTS
+    (
+        SELECT *
+        FROM Room in_r
+        WHERE in_r.RoomFloor > out_r.RoomFloor
+    );
+
+-- Find the room type with the highest price per night.
+
+SELECT out_rt.Room_type,
+       out_rt.pricePerNgt
+FROM Room_Type out_rt
+WHERE out_rt.pricePerNgt >= ALL
+      (
+          SELECT in_rt.pricePerNgt
+          FROM Room_Type in_rt
+      );
+
+-- Write a query to find customers who availed most of the discount.
+
+SELECT r.custId
+FROM Reservation r,
+     Discount outer_d
+WHERE NOT EXISTS
+    (
+        SELECT *
+        FROM Discount inner_d
+        WHERE inner_d.DiscountAmount > outer_d.DiscountAmount
+    )
+  AND outer_d.ConfirmNo = r.ConfirmNo;
+
+-- Create view FavRoom containing CustID, RoomNo where the customer with CustID reserved the room with RoomNo by Paying
+-- highest cost compared to any other room.
+
+CREATE VIEW FavoriteRoom AS
+SELECT r.custId,
+       r.RoomNo
+FROM Reservation r
+WHERE r.amount IN
+      (
+          SELECT MAX(inr.amount)
+          FROM Reservation inr
+          GROUP BY inr.custId
+      )
+ORDER BY r.custId;
+
+-- Return cust-cust-room triples where two different customers have the room as their favorite.
+
+SELECT fr.RoomNo,
+       fr.custId,
+       (
+           SELECT DISTINCT (frr.custId)
+           FROM FavoriteRoom frr
+           WHERE frr.RoomNo = 302
+             AND frr.custId <> 15
+       ) AS SECONDCUST
+FROM FavoriteRoom fr
+WHERE fr.RoomNo = 302
+  AND fr.custId <> 13;
