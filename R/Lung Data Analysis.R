@@ -49,7 +49,7 @@ boxplot_of_males <- boxplot(male_over_age_15$LungCap, col = rainbow(1), horizont
 boxplot_of_males$out # Get outliers
 
 male_outliers <- subset(male_over_age_15, male_over_age_15$LungCap == 6.450 | male_over_age_15$LungCap == 7.175)
-male_outliers #TODO
+male_outliers
 
 lung_cap_of_females_who_smoke <- subset(lung_data, lung_data$Gender == 'female' & lung_data$Smoke == 'yes')
 
