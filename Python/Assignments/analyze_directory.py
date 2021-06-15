@@ -1,6 +1,7 @@
 import os
 
 dir_and_extensions = {}
+cumulative_count = 0
 
 
 def analyse_directory(path):
@@ -12,18 +13,20 @@ def analyse_directory(path):
 
     for item in dir_contents:
         if item.find('.') == -1:
-            analyse_directory(item)
+            relative_path = f'{path}/{item}'
+            analyse_directory(relative_path)
             os.chdir('..')
 
         elif item.find('.') > 0:
-            file_extension = item[item.find('.'):]
+            file_extension = item[item.find('.') + 1:]
+            file_name = item[:item.find('.')]
 
             if extension_and_files.get(file_extension) is None:
-                extension_and_files.update({file_extension: [item]})
+                extension_and_files.update({file_extension: [file_name]})
 
             else:
                 similar_files = extension_and_files.get(file_extension)
-                similar_files.append(item)
+                similar_files.append(file_name)
                 extension_and_files.update({file_extension: similar_files})
 
     global dir_and_extensions
@@ -33,31 +36,31 @@ def analyse_directory(path):
 def summarize_directory(dict):
 
     with open('../Assignments/my_text_file.txt', 'w') as fp:
-        file_type_and_count = {}
+        cols = 'DIR NAME\tLIST OF FILES\tEXTENSION\tCOUNT\tCUMULATIVE_COUNT\n'
+        fp.write(cols)
 
-        for dir_name, files in dict.items():
+        for dir_name, extension_with_files in reversed(dict.items()):
+            for file_type, file_names in extension_with_files.items():
 
-            fp.write(f'\n{dir_name} contains:\n')
+                write_to_file = f'{dir_name}\t\t\t'
+                string_of_file_names = str()
 
-            for file_type, file_names in files.items():
-                fp.write(f'\n{file_names}')
-                fp.write(f'\nTotal number of {file_type} files: \
-                    {len(file_names)}\n')
+                for file in file_names:
+                    string_of_file_names += f'{file} '
 
-                if file_type_and_count.get(file_type) is None:
-                    file_type_and_count.update({file_type: len(file_names)})
+                write_to_file += f'{string_of_file_names}\t\t'
+                write_to_file += f'{file_type}\t\t'
+                write_to_file += f'{len(file_names)}\t\t'
 
-                else:
-                    count = file_type_and_count.get(file_type)
-                    count = count + len(file_names)
-                    file_type_and_count.update({file_type: count})
+                global cumulative_count
+                cumulative_count += len(file_names)
 
-        fp.write(f'\n\nTotal count of files of each type: \
-            {file_type_and_count}')
+                write_to_file += f'{cumulative_count}'
+
+                fp.write(f'{write_to_file}\n')
 
 
 if __name__ == '__main__':
-
-    analyse_directory('../Learning Python')
-    print(dir_and_extensions)
+    full_path = os.getcwd()
+    analyse_directory(full_path)
     summarize_directory(dir_and_extensions)
