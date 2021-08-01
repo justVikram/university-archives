@@ -1,6 +1,6 @@
 print("Hello" + 'world')  # Use either double or single quotes for strings
 
-print('''To print 
+print('''To print
 multiline strings, use triple single quotes''')
 
 
@@ -95,8 +95,9 @@ print(story.find("brown"))  # Returns index of first occurrence of input string
 print(story.replace('dog', 'cat'))
 
 
-# Lists : Containers to store a set of values of any data type. They preserve the order
-#          and individual elements can be accessed just like the way we do in strings
+# Lists : Containers to store a set of values of any data type.
+# They preserve the order and individual elements can be accessed
+# just like the way we do in strings
 
 even_nos = [2, 4, 6, 8, 10]
 print(even_nos)
@@ -119,7 +120,8 @@ print(my_list[0: 2])
 # List methods
 
 my_list = [6, 3, 8, 2, 11, 4, 7]
-my_list.sort()  # sort() sorts the list in-place, i.e the actual list is modified
+my_list.sort()
+# sort() sorts the list in-place, i.e the actual list is modified
 print(my_list)
 
 # sorted () is better as it returns sorted list without modifying original list
@@ -183,11 +185,13 @@ print(my_dict.keys())  # Returns a dict_key which can be converted into a list
 print(my_dict.values())
 print(my_dict.items())
 
-# Adds the key-value pairs to the dict if they do not already exist, else updates values for specified keys
+# Adds the key-value pairs to the dict if they do not already exist,
+# else updates values for specified keys
 my_dict.update({'third': 4, 'fifth': 5})
 print(my_dict)
 
-# Difference between getting values through [] and get(). Apart from this, they work the same way
+# Difference between getting values through [] and get().
+#  Apart from this, they work the same way
 
 print(my_dict.get('this key does not exist'))  # This one returns none
 print(my_dict['this key does not exist'])  # This throws an error
@@ -277,7 +281,8 @@ for i in range(5):
     # F-strings, whatever is between {} is evaluated
     print(f"Adding 5 to each iteration yields {i + 5}")
 else:
-    # executes only upon successful termination of for-loop (won't be executed when breaking from loop)
+    # executes only upon successful termination of for-loop
+    # (won't be executed when breaking from loop)
     print('i >= 5')
 
 
@@ -320,7 +325,7 @@ with open('sample_text.txt') as txt_file:
     first_line = txt_file.readline()
 
 
-## OBJECT ORIENTED PROGRAMMING ##
+# OBJECT ORIENTED PROGRAMMING #
 
 
 class Employee:
@@ -336,7 +341,8 @@ class Employee:
     def alter_company_name(cls, company_name):
         cls.company_name = company_name
 
-    # (GETTER) A method that acts as an attribute. Use it when deriving values from other attributes.
+    # (GETTER) A method that acts as an attribute.
+    # Use it when deriving values from other attributes.
     @property
     def bonus(self):
         return self._bonus
@@ -349,7 +355,8 @@ class Employee:
     def total_salary(self):
         return self.bonus + self.salary
 
-    @staticmethod   # Can't access class variables or instance variables, can only be used for utility
+    @staticmethod   # Can't access class variables or instance variables,
+    # can only be used for utility
     def check_name(name):
         if len(name) > 1:
             print('Valid name')
@@ -357,7 +364,8 @@ class Employee:
         else:
             print('Invalid name')
 
-    def __str__(self):  # Used to override what is displayed with print(obj_name)
+    def __str__(self):
+        # Used to override what is displayed with print(obj_name)
         return f'This is {self.name} from {self.company_name}'
 
 
@@ -392,7 +400,7 @@ print(f"{e1.name}'s new bonus: {e1.bonus}")
 print(f"{e1.name}'s new total salary: {e1.total_salary}")
 
 
-## INHERITANCE ##
+# INHERITANCE ##
 
 class Employee:
     company = 'Google Inc.'
@@ -419,7 +427,8 @@ emp_1.show_details()
 programmer_1.show_details()
 
 
-# Illustrating how nothing is private in Python -- https://www.tutorialsteacher.com/python/public-private-protected-modifiers
+# Illustrating how nothing is private in Python
+# https://www.tutorialsteacher.com/python/public-private-protected-modifiers
 
 class Test:
     __slots__ = ()  # Prevents addition of attributes outside the class
