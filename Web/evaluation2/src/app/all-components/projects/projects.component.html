@@ -1,0 +1,12 @@
+<br>
+<div *ngFor="let project of registered_projects; let i = index">
+  <div class="text-center">
+    <h1><b>{{i+1}}. {{project.title}}</b></h1>
+  </div>
+  <br>
+  <div class="text-body">
+    {{project.description}}
+  </div>
+  <br>
+</div>
+
