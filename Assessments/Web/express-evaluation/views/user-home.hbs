@@ -1,0 +1,73 @@
+<div class="text-center">
+    <br>
+    <h4>
+        Courses
+    </h4>
+</div>
+<br>
+
+<div class="container">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Course Name</th>
+            <th scope="col">Instructor's Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each result}}
+            <tr class="table-light">
+                <td>{{this.course_name}}</td>
+                <td>{{this.faculty_name}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<div class="text-center">
+    <br>
+    <h4>
+        Register for Course
+    </h4>
+</div>
+<br>
+
+<div class="container">
+    <form>
+        <fieldset>
+            <div class="form-group">
+                <label for="name" class="form-label mt-4">Name</label>
+                <input type="text" class="form-control" id="name" aria-describedby="name" required>
+            </div>
+            <div class="form-group">
+                <label for="exampleSelect1" class="form-label mt-4">Semester</label>
+                <select class="form-select" id="exampleSelect1">
+                    <option>I</option>
+                    <option>III</option>
+                    <option>V</option>
+                    <option>VII</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="exampleSelect1" class="form-label mt-4">Course</label>
+                <select class="form-select" id="exampleSelect1">
+                    {{#each result}}
+                        <option>
+                            {{this.course_name}}
+                        </option>
+                    {{/each}}
+                </select>
+            </div>
+        </fieldset>
+        <br>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">REGISTER</button>
+        </div>
+        <br>
+    </form>
+</div>
+
+
+
+

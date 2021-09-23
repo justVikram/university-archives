@@ -1,0 +1,33 @@
+<div class="text-center">
+    <br>
+    <h4>
+        Dashboard
+        <br><br>
+    </h4>
+</div>
+<br>
+
+<div class="container">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Student ID</th>
+            <th scope="col">Student Name</th>
+            <th scope="col">Course Name</th>
+            <th scope="col">Instructor's Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each result}}
+            <tr class="table-light">
+
+                <td>{{this.id}}</td>
+                <td>{{this.name}}</td>
+                <td>{{this.course_name}}</td>
+                <td>{{this.faculty_name}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>
+
