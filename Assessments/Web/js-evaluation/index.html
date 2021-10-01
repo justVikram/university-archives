@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration Portal</title>
+</head>
+<body>
+<link rel="stylesheet" href="./style.css"/>
+
+<div class="text-center">
+    <br>
+    <h4>
+        <b>STUDENT REGISTRATION</b>
+        <br>
+    </h4>
+</div>
+
+<div class="container">
+    <form action='home.html' method="post">
+        <div class="form-group">
+            <div class="form-group">
+                <label class="col-form-label mt-4" for="name">Name</label>
+                <input type="text" class="form-control" id="name" maxlength="20" required>
+            </div>
+            <div class="form-group">
+                <label for="email" class="form-label mt-4">Email address</label>
+                <input type="email" class="form-control" id="email" name="email"
+                       aria-describedby="emailHelp" required>
+            </div>
+            <div class="form-group">
+                <label for="password" class="form-label mt-4">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label class="col-form-label mt-4" for="age">Age</label>
+                <input type="number" class="form-control" id="age" required>
+            </div>
+            <div class="form-group">
+                <label class="col-form-label mt-4" for="number">Contact Number</label>
+                <input type="tel" class="form-control" id="number" maxlength="10">
+            </div>
+            <div class="form-group">
+                <label class="col-form-label mt-4" for="cgpa">CGPA Obtained</label>
+                <input type="text" class="form-control" id="cgpa" required>
+            </div>
+            <div class="form-group">
+                <label for="address" class="form-label mt-4">Address</label>
+                <textarea class="form-control" id="address" rows="3"></textarea>
+            </div>
+            <br>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary" id="login-btn" onclick="pass_through()">SIGN UP</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="App.js"></script>
+</body>
+</html>

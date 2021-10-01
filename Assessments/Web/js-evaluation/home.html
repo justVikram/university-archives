@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<link rel="stylesheet" href="./style.css"/>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">User ID: <span id="reg-id"></span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
+                aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Home
+                        <span class="visually-hidden">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./bank-exam.html">Bank Exam
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Railway Exam</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="ksrtc-exam.html">KSRTC Exam</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<br>
+<div class="container">
+    <div class="text-center">
+        <h1>Cutoffs for Exams</h1>
+    </div>
+</div>
+
+<div class="container">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Exam Name</th>
+            <th scope="col">Cutoff Percentile</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Bank Exam</td>
+            <td>90</td>
+        </tr>
+        <tr>
+            <td>Railway Exam</td>
+            <td>80</td>
+        </tr>
+        <tr>
+            <td>KSRTC Exam</td>
+            <td>75</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="App.js"></script>
+</body>
+</html>
